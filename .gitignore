@@ -1,0 +1,10 @@
+logs/*
+!.gitkeep
+node_modules/
+*/bower_components/
+/src/assets/css/
+tmp
+.DS_Store
+.idea
+/nbproject/
+/src/assets/libs/bower_components/
