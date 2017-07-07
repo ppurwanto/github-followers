@@ -5,8 +5,8 @@
 angular
   .module('ghFollowersApp')
 
-  .config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
+  .config(($locationProvider, $routeProvider) => {
     $locationProvider.hashPrefix('!');
 
-    $routeProvider.otherwise({redirectTo: '/user'});
-  }])
+    $routeProvider.otherwise({redirectTo: '/user-search'});
+  });

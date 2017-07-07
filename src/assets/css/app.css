@@ -1,0 +1,26 @@
+h1 {
+  display: inline; }
+
+h2 {
+  font-size: 1.5em; }
+  user-detail h2 {
+    font-size: 2em; }
+
+@media only screen and (max-width: 601px) {
+  .brand-logo {
+    margin-left: 20px; } }
+input.search-boxes[type=text] {
+  border-radius: 2px; }
+
+.clear-search-box-btn {
+  cursor: pointer; }
+
+.collection .collection-item.avatar {
+  line-height: 2.5rem;
+  min-height: 62px; }
+  ng-pluralize + user-followers-list .collection .collection-item.avatar {
+    line-height: 1rem; }
+
+.main-user-avatar {
+  width: 150px;
+  height: 150px; }

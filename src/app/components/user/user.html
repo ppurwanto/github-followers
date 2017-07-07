@@ -1,1 +1,19 @@
-<p>This is the partial for User.</p>
+<h2><img ng-src="{{$ctrl.user.avatar_url}}" alt="Avatar"
+    title="{{$ctrl.user.login ? ($ctrl.requestedUser = $ctrl.user.login) :
+        $ctrl.requestedUser}}'s Avatar"
+    class="circle main-user-avatar">
+  User <strong>{{$ctrl.requestedUser}}</strong>
+  
+    <span ng-show="$ctrl.user.login">has
+      <strong>
+        <ng-pluralize count="$ctrl.user.followers"
+            when="{'0': 'no follower',
+                   'one': '1 follower:',
+                   'other': '{{$ctrl.user.followers | number}} followers:'}">
+        </ng-pluralize>
+        <user-followers-list ng-show="$ctrl.user.followers > 0">
+        </user-followers-list>
+      </strong>
+    </span>
+  <span ng-hide="$ctrl.user.login">does <strong>NOT exist</strong>!</span>
+</h2>

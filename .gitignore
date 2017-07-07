@@ -2,9 +2,8 @@ logs/*
 !.gitkeep
 node_modules/
 */bower_components/
-/src/assets/css/
+/src/assets/css/ # Needed by Heroku when pulling directly from my GitHub 
 tmp
 .DS_Store
 .idea
 /nbproject/
-/src/assets/libs/bower_components/

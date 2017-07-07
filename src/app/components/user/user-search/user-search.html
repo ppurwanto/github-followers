@@ -1,0 +1,15 @@
+<div ng-show="$ctrl.UserSearchResultsService.searchQuery && $ctrl.UserSearchResultsService.searchQuery.trim() !== ''">
+  <ul class="collection" ng-show="$ctrl.UserSearchResultsService.results.items && $ctrl.UserSearchResultsService.results.items.length">
+    <li class="collection-item avatar" ng-repeat="user in $ctrl.UserSearchResultsService.results.items">
+      <a href="/#!/user/{{user.login}}">
+        <img ng-src="{{user.avatar_url}}" alt="Avatar" title="{{user.login}}'s Avatar" class="circle">
+        <span class="title">{{user.login}}</span>
+      </a>
+    </li>
+  </ul>
+  <p ng-hide="$ctrl.UserSearchResultsService.results.items && $ctrl.UserSearchResultsService.results.items.length">No results.</p>
+</div>
+<div ng-hide="$ctrl.UserSearchResultsService.searchQuery && $ctrl.UserSearchResultsService.searchQuery.trim() !== ''">
+  <h2>Welcome to GitHub Followers App!</h2>
+  <p>You can start by typing into the User Search box above/in the menu.</p>
+</div>

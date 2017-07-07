@@ -1,25 +1,53 @@
-/* app css stylesheet */
-
-.menu {
-  list-style: none;
-  border-bottom: 0.1em solid black;
-  margin-bottom: 2em;
-  padding: 0 0 0.5em;
-}
-
-.menu:before {
-  content: "[";
-}
-
-.menu:after {
-  content: "]";
-}
-
-.menu > li {
+h1 {
   display: inline;
 }
 
-.menu > li + li:before {
-  content: "|";
-  padding-right: 0.3em;
+h2 {
+  font-size: 1.5em;
+  user-detail & {
+    font-size: 2em;
+  }
+}
+
+@media only screen and (max-width: 601px) { // For small screens (= MCSS .s#)
+  .brand-logo {
+    margin-left: 20px; // Avoid logo overlapping with mobile sidebar menu icon
+  }
+}
+
+input.search-boxes[type=text] {
+  border-radius: 2px;
+}
+
+.clear-search-box-btn {
+  cursor: pointer;
+}
+
+// TODO: Only apply below if don't have next sibling
+//  (description content), like <p>
+// Achieves, relative to avatar, like vertical-align: middle
+.collection .collection-item.avatar { // For direct /followers pages
+  line-height: 2.5rem;
+  
+  // Current Materialize CSS default values for the (Circle) Avatar
+  //  & .collection-item
+  // TODO: Import the values directly from?:
+  //  materialize/sass/components/_global.scss
+  $mcss-avatar-height: 42px;
+  $mcss-collection-item-top-bottom-padding: 10px;
+  
+  // Use those values to calculate more tight-fit value
+  //  (instead of built-in, which is too much)
+  min-height: $mcss-avatar-height +
+      ($mcss-collection-item-top-bottom-padding * 2);
+  
+    // For main user pages with followers listings
+    ng-pluralize + user-followers-list & {
+      line-height: 1rem;
+    }
+}
+
+.main-user-avatar {
+  width: 150px;
+  height: 150px;
 }

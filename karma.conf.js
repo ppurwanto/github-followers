@@ -8,9 +8,10 @@ module.exports = function(config) {
     //  the tests (including all needed libraries)
     files: [
       'assets/libs/bower_components/angular/angular.js',
-      'assets/libs/bower_components/angular-route/angular-route.js',
-      'assets/libs/bower_components/angular-mocks/angular-mocks.js',
-      'app/**/*.js'
+      'assets/libs/bower_components/angular-*/angular-*.js',
+      'app/**/*.module.js', // Modules first
+      'app/**/*!(.module|.spec).js', // NON-modules & NON-specs next
+      'app/**/*.spec.js' // Specs/tests finally
     ],
 
     // list of files to exclude

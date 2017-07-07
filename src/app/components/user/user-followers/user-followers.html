@@ -1,0 +1,20 @@
+<ul class="collection" ng-show="$ctrl.followers && $ctrl.followers.length">
+  <li class="collection-item avatar" ng-repeat="follower in $ctrl.followers">
+    <a href="#!/user/{{follower.login}}">
+      <img ng-src="{{follower.avatar_url}}" alt="Avatar" title="{{follower.login}}'s Avatar" class="circle">
+      <span class="title">{{follower.login}}</span>
+    </a>
+  </li>
+</ul>
+
+<!-- TODO: Not yet completed for previous, etc. -->
+<ul class="pagination" ng-show="$ctrl.lastPageNumURL || $ctrl.prevPageNumURL">
+  <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+  <!--<li class="active"><a href="#!">1</a></li>-->
+  <li class="waves-effect" ng-repeat="curPaginNum in [] | paginationListFilter:$ctrl.lastPageNumURL">
+    <a href="#!/user/{{$ctrl.requestedUser}}/followers/{{curPaginNum}}">
+      {{curPaginNum}}
+    </a>
+  </li>
+  <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+</ul>
