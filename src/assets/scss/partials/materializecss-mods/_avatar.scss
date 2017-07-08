@@ -1,0 +1,29 @@
+// TODO: Only apply below if don't have next sibling
+//  (description content), like <p>
+// Achieves, relative to avatar, like vertical-align: middle
+.collection .collection-item.avatar { // For direct /followers pages
+  line-height: 2.7rem;
+  
+  // Current Materialize CSS default values for the (Circle) Avatar
+  //  & .collection-item
+  // TODO: Import the values directly from?:
+  //  materialize/sass/components/_global.scss
+  $mcss-avatar-height: 42px;
+  $mcss-collection-item-top-bottom-padding: 10px;
+  
+  // Use those values to calculate more tight-fit value
+  //  (instead of built-in, which is too much)
+  min-height: $mcss-avatar-height +
+      ($mcss-collection-item-top-bottom-padding * 2);
+}
+
+.main-user-avatar {
+  width: 150px;
+  height: 150px;
+  @media only screen and (max-width: 601px) { // For small screens (= MCSS .s*)
+    & {
+      width: 80px;
+      height: 80px;
+    }
+  }
+}

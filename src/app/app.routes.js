@@ -10,3 +10,8 @@ angular
 
     $routeProvider.otherwise({redirectTo: '/user-search'});
   });
+  // To suppress 'Possibly unhandled rejections' errors, use:
+  //  (Usually even after already supplying error handlers.)
+//  .config(['$qProvider', ($qProvider) => {
+//    $qProvider.errorOnUnhandledRejections(false);
+//  }]);

@@ -4,16 +4,24 @@ angular
   .module('ghFollowersApp.user')
   
   .config(($routeProvider) => {
-    $routeProvider.when('/user-search', {
+    /**
+     * Optionally accepts a searchQuery URL parameter
+     */
+    $routeProvider.when('/user-search/:searchQuery?', {
       template: '<user-search-form></user-search-form>'
     });
   })
 
-  .factory('UserSearchService', ($resource) => {
-    return $resource('https://api.github.com/search/users');
+  // Since we need to get the headers AND being able to use .then().catch() on
+  //   promises to avoid causing Angular's "possibly unhandled exceptions",
+  //   use an interceptor, based on:
+  //   https://stackoverflow.com/questions/22898265/get-response-header-in-then-function-of-a-ngresource-objects-promise-propert
+  .factory('UserSearchService', (UserResourceWithHeadersService) => {
+    return UserResourceWithHeadersService.build('search');
   })
-  
-  .service('UserSearchResultsService', function(UserSearchService, $location, $timeout) {
+
+  .service('UserSearchResultsService', function(UserSearchService, $timeout,
+      $location, UserErrorMessagingService) {
     const svc = this;
     let delayedFetchTimerPromise;
 
@@ -39,26 +47,39 @@ angular
         }
     }).call(); // IIFE with arrow func.
 
+    // TODO: Move into link function once can have userSearch directive:
+    /**
+     * @param {boolean} showIfTrue Supply true to show; false to hide
+     */
+    svc.toggleLoadingBar = (showIfTrue) => {
+      let $loadingBarElm = $('#user-search-nav .progress');
+      
+        if (showIfTrue) {
+          $loadingBarElm.fadeOut(0).removeClass('hide').fadeIn(250);
+        } else {
+          $loadingBarElm.fadeOut(2000, () => {
+            $loadingBarElm.addClass('hide');
+          });
+        }
+    };
+
     svc.fetchResults = () => {
-        if (!svc.searchQuery.length) {
+      UserErrorMessagingService.clear();
+        if (typeof svc.searchQuery !== 'string' || !svc.searchQuery.length) {
 //            console.warn('Attempted to fetch with empty search query.');
           return;
         }
       // NOTE: Usernames of length 1 DO exist.
       
-      // TODO: Instead of resetting upon search box focus,
-      //  detect (but more complex) if we're on a user results
-      //  page but user wants to search again, so we've to reset.
-      //  Already started with below code, but still not desirable:
-//        if (/\/user\//.test($location.path())) {
-//          console.log('Resetting to search results page/root from this old path:',
-//              $location.path());
-//          $location.path('/');
-//        }
+        if (!/\/user-search\b/.test($location.path())) {
+          // NOTE: Angular already auto-encodes URLs
+          $location.path('/user-search/' + svc.searchQuery);
+          return;
+        }
+      svc.toggleLoadingBar(true);
 
-      svc.results = UserSearchService.get(
-          {q: svc.searchQuery},
-          (results, getResponseHeaders, statusNumber, statusText) => {
+      UserSearchService.obtainWithHeaders({q: svc.searchQuery}).$promise.then(
+          (results) => {
             // WARNING: "To keep the Search API fast for everyone, we limit
             //  how long any individual query can run. For queries that exceed
             //  the time limit, the API returns the matches that were already
@@ -67,9 +88,13 @@ angular
 
             // TODO: Move these and the notifier below into own rate limit
             //    monitoring/management service
-            svc.numRequestsLimitPerHour = getResponseHeaders('X-RateLimit-Limit');
-            svc.numRequestLimitRemain = getResponseHeaders('X-RateLimit-Remaining');
-            svc.timestampSecsTillLimitReset = getResponseHeaders('X-RateLimit-Reset');
+            svc.numRequestsLimitPerHour = results.
+                getResponseHeaders('X-RateLimit-Limit');
+            svc.numRequestLimitRemain = results.
+                getResponseHeaders('X-RateLimit-Remaining');
+            svc.timestampSecsTillLimitReset = results.
+                getResponseHeaders('X-RateLimit-Reset');
+            svc.results = results;
               if (svc.results.items && svc.results.items.length) {
                 angular.forEach(
                     svc.results.items.slice(0, autoCompleteNewResultsLimit),
@@ -95,33 +120,22 @@ angular
                   data: svc.resultsInMCSSAutoCompleteFormat,
                   limit: autoCompleteNewResultsLimit,
                   onAutocomplete: (value) => {
-                    svc.fetchResults();
-                    // TODO: Fix below autocomplete redirect onclick not reliable:
-//                    $location.path('/user/' + value);
+                    // To prevent causing conflicts with redirects thinking
+                    //    we need to go back to search results view
+                    svc.clearSearchQuery();
+                    
+                    $location.path('/user/' + value);
                   }
                 });
               }
-          },
-          (errorResponse) => {
-            let errMsg = 'FAILED to fetch results';
-              if (svc.numRequestLimitRemain < 1 ||
-                  (errorResponse && errorResponse.data)) {
-                if (/limit\s+exceed/i.test(errorResponse.data.message)) {
-                  errMsg = `Sorry! You've exceeded the
-                      ${svc.numRequestsLimitPerHour
-                          === undefined ? '' : svc.numRequestsLimitPerHour}
-                      queries limit per hour. Please wait
-                      ${svc.timestampSecsTillLimitReset
-                          === undefined ? 'about up to another hour' :
-                          'for ' + (svc.timestampSecsTillLimitReset / 60) +
-                          'minutes'}
-                      and try again.`;
-                } else {
-                  errMsg += ': "' + errorResponse.data.mesage.substring(0, 30) +
-                      '"';
-                }
-              }
-            Materialize.toast(errMsg, 10000);
+            svc.toggleLoadingBar(false);
+//            console.log('User Search Results completed.');
+          }).catch((errorResponse) => {
+            UserErrorMessagingService.
+                processAndDisplayErrorObjectInUserFriendlyWay(errorResponse,
+                    svc.numRequestLimitRemain, svc.timestampSecsTillLimitReset,
+                    svc.numRequestsLimitPerHour);
+            svc.toggleLoadingBar(false);
           });
     };
 
@@ -130,6 +144,7 @@ angular
      * @param {number} opt_delayMillis Overwrites default delays
      */
     svc.fetchResultsDelayed = (opt_delayMillis) => {
+      UserErrorMessagingService.clear();
         if (delayedFetchTimerPromise === undefined) { // Not delayed yet = infreq.
           delayedFetchTimerPromise = $timeout(
               svc.fetchResults,
@@ -149,23 +164,25 @@ angular
         } else { // Currently already delayed = frequent search typing
           infrequentActivityThrottleMode = false;
         }
-
-        // Alternatively (though doesn't fit well), can delay model updates
-        //  instead with this HTML attribute:
-        //    ng-model-options="{debounce: 2000}"
-        //    (Adds 2 second delay/"debounce" before evaluating model)
-        // Were we using the delayed ng-model with debounce where ng-keyup can
-        //  separately fire, we'll also need this:
-        //    $scope.$watch('searchQuery', () => {
-        //      svc.fetchResults();
-        //    });
     };
   })
   
   .component('userSearchForm', {
-    templateUrl: 'app/components/user/user-search/user-search.html',
-    controller: function UserSearchController(UserSearchResultsService) {
-      const ctrl = this;
-      ctrl.UserSearchResultsService = UserSearchResultsService;
-    }
+      templateUrl: 'app/components/user/user-search/user-search.html',
+      controller: function UserSearchController(UserSearchResultsService,
+          UserErrorMessagingService, $routeParams) {
+        const ctrl = this;
+        ctrl.UserSearchResultsService = UserSearchResultsService;
+        ctrl.UserErrorMessagingService = UserErrorMessagingService;
+          // Track/mirror queries via direct URL requests (only if not already
+          //  the same as current query in the model)
+          if ((typeof $routeParams.searchQuery === 'string') &&
+              $routeParams.searchQuery !== '') {
+            // TODO: Find a way without this hack-ish delay needed since view change will overwrite otherwise
+            setTimeout(()=>{
+              ctrl.UserSearchResultsService.searchQuery = $routeParams.searchQuery;
+              ctrl.UserSearchResultsService.fetchResults();
+            }, 100);
+          }
+      }
   });

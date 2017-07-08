@@ -1,0 +1,31 @@
+.autocomplete-content { // Main container
+  z-index: 100;
+  
+  // TODO: Make Autocomplete Dropdown Closer to Search box
+  //  (Warning: at least it already automatically adjusts after displaying/
+  //  window is moved, etc. so that it's always at the same relative place)
+  //position: relative;
+  //top: -15px;
+  
+    & li span.highlight { // Matched parts
+      font-weight: bold;
+      color: #039be5; // = Same default color for links
+    }
+}
+
+.dropdown-content li {
+  &>a, &>span { // Unmatched parts
+    color: gray;
+  }
+}
+
+.search-box-container {
+  // These fixes the problem of autocomplete list taking up space &
+  //  making content "run away" from it as if it was in between the contents
+  
+  // NOTE: Sync height with root .nav-wrapper.container
+  height: 64px; // Just enough for search box & not for autocomplete list, etc.
+  overflow: visible; // But still allow autocomplete to overflow
+  position: relative;
+  z-index: 999999;
+}

@@ -1,0 +1,10 @@
+// Actually, '.invisible' is already in Modernizr, but don't depend on it in
+//  since it isn't its core thing.
+.invisible-elm {
+  visibility: hidden;
+}
+
+.error-msg {
+  font-weight: bold;
+  color: red;
+}

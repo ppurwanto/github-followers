@@ -1,57 +1,58 @@
 angular
-  .module('ghFollowersApp.nav', ['ghFollowersApp.user'])
-  .controller('NavigationController', function(
-      $rootScope,
-      $location,
-      UserSearchResultsService) {
+  .module('ghFollowersApp.common')
+  .controller('NavigationController', function($rootScope,
+      UserSearchResultsService, KeyboardCodesUtilsService) {
+    const ctrl = this;
+    ctrl.UserSearchResultsService = UserSearchResultsService;
+    
     // *Initialize Materialize CSS Collapsible Mobile Side Nav
     let $mainSearchBoxes;
-    let $clearSearchBoxBtns;
     
     // Most reliable way is to wait until first route change completed,
     //  signaling Angular is fully ready:
     
     // Listen for any route/view (successful) change
-    const detachRouteChangeSuccessListener = $rootScope.$on(
-        '$routeChangeSuccess',
-        () => {
+    const detachRouteChangeSuccessListenerForSearchBoxFocus = $rootScope.$on(
+        '$routeChangeSuccess', () => {
           $(document).ready(() => {
             // Here can do onload-like initializations
             //  (rough shortcut vs using Directives' link method)
-            $('.button-collapse').sideNav(); // Mobile Side Nav.
-
-            // Reset & focus on search box
-            $mainSearchBoxes = $('.search-boxes');
-            $clearSearchBoxBtns = $('.clear-search-box-btn');
-            $clearSearchBoxBtns.click(function() {
-              // Place focus on search box associated with the clear button
-              $(this).parent().prev().children('.search-boxes').first()
-                  .focus().keyup();
-            });
-            $mainSearchBoxes.first().focus().keyup();
             
-            $mainSearchBoxes.focus(() => {
-              if (/\/user\//.test($location.path())) {
-//                $location.path('/');
+            /* Mobile Side Nav. */
+            $('.button-collapse').sideNav();
+            $(document).keyup((event) => {
+              if (KeyboardCodesUtilsService.isEsc(event.which)) {
+                $('.button-collapse').sideNav('hide');
               }
             });
+            
+            /* Search Boxes */
+            $mainSearchBoxes = $('.search-boxes');
+            
+            $('.clear-search-box-btn').click((elm) => {
+              // Place focus on search box associated with the clear button
+              $(elm.target).parent().prev().children('.search-boxes').first()
+                .focus().keyup();
+            });
+            
+            $mainSearchBoxes.first().focus().keyup();
           });
           
-          detachRouteChangeSuccessListener(); // Ensure run only once
+          // Ensure this initializer function runs only once
+          detachRouteChangeSuccessListenerForSearchBoxFocus();
         });
     
-    // Ensure if we click on the sidebar (producing route change), that it's
-    //  collapsed (hidden) again.
-    $rootScope.$on('$routeChangeStart',
-        () => {
-          $(document).ready(() => {
-            $(".button-collapse").sideNav('hide');
-              if ($clearSearchBoxBtns) {
-                $('.clear-search-box-btn').click();
-              }
-          });
-        });
+    ctrl.processShortcutKey = (keyCode, isOnMobileSideBarSearchBox) => {
+      if (KeyboardCodesUtilsService.isEnter(keyCode)) { // Enter
+        ctrl.UserSearchResultsService.fetchResults();
+          if (isOnMobileSideBarSearchBox) {
+            $('.button-collapse').sideNav('hide');
+          }
+      }
+    };
     
-    const ctrl = this;
-    ctrl.UserSearchResultsService = UserSearchResultsService;
+    $rootScope.$on('$viewContentLoaded', () => {
+      console.log('View Loaded @', Date.now);
+    //Here your view content is fully loaded !!
+    });
   });

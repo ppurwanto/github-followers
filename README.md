@@ -23,17 +23,20 @@ streamlining the MVC/MVVM (modular code and separations of concerns) and SPA bui
 processes. Further, combined with my native JavaScript expertise and other libraries
 like jQuery, it's been a lot of fun building this app. Also, I've used the
 [Materialize CSS](http://materializecss.com) RWD/Material Design framework that
-makes building attractive, modern UIs a breeze. Then, just like how some large
-Websites did, I also did manage
-details such as adding/ensuring API request throttling while still allowing
-near-instant `autocomplete` suggestions and results, to keep down on redundant
+makes it a breeze to build attractive, modern UIs with built-in intuitive
+animations. That's possible by being able to simply select,
+by UI element types/actions, from its wide array of pre-"packaged" combinations of
+HTML 5 markup and CSS classes (and jQuery initializers for dynamically generated
+elements). Then, follow good UI examples like how some large Websites did,
+I also did manage details such as adding/ensuring API request throttling
+while still allowing near-instant `autocomplete` suggestions and results, to keep down on redundant
 instant requests when the query hasn't changed considerably. Finally, I did get to use a bit
 of my Regular Expressions expertise for parsing GitHub's custom headers, like
 the Link headers for pagination.
 
 ## If Only I had More Time . . .
 * Fine tune more details/styling and straighten out blemishes.
-* Add more CSS/Materialize animations, transitions, optimizations, etc.
+* Add more CSS/Materialize/ng animations, transitions, optimizations, etc.
 * Try Travis Continuous Integration (CI) for continual, automated testing.
 * Try Angular (Platform) v4 with TypeScript, and also deeper ES6+ usage.
 * Be even more consistent in the language style guide that I follow
@@ -47,11 +50,26 @@ valued here, I spent a great deal of my time during this project to learn more
 best practices and latest features instead of just implementation.
 
 ### What I Left Out
+* Due to limited time, for pagination, I didn't do a "Load More" button (since
+then I would need to optimize the memory usage/do swaps),
+but instead provide links to all available individual pages using what
+Materialize CSS already helped provide. The shortfall for this is seen for users
+with thousands of followers, which generates many page links. However, it does
+all work, and I could've even trimmed away ranges that are far away from the
+current, first, and last pages--had I had more time.
+(Other than that, all other core functionalities
+are completed, even if may not be perfect.)
 * Optimize API calls further for scalability, by checking Cache headers like 'If-Modified-Since' &
 act accordingly, etc. Also use OAuth tokens instead of unauthenticated.
-* More thorough unit (Karma/Jasmine) and integration/end-to-end (Protractor) tests.
+* More automated unit (Karma/Jasmine) tests and create integration/end-to-end (Protractor) tests.
+However, I did do extensive manual tests and have very little automated test
+experience to begin with, and, at most, I usually just do simple
+console.assert() statements (later stripped by Gulp uglify plugin)
+in my personal projects--of which I didn't use here either.
 * Adhere closely to OOP single responsibility principle & further separation/modularization of code.
 * Minify files and convert ES6+ JS to ES5 with Gulp+Babel, etc. and modularize Angular & SCSS more.
+* Optimize for slow Internet speeds and add more progress bars/spinners while
+loading data and changing between views. 
 * Implement logging, monitoring, and more error handling.
 * Misc. are in the form of `TODO` comments in my code.
 

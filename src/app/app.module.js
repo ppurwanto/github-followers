@@ -5,6 +5,6 @@
 //  each related component.
 angular
   .module('ghFollowersApp', [
-    'ghFollowersApp.nav',
+    'ghFollowersApp.common',
     'ghFollowersApp.user'
   ]);

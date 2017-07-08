@@ -1,3 +1,43 @@
+.autocomplete-content {
+  z-index: 100; }
+  .autocomplete-content li span.highlight {
+    font-weight: bold;
+    color: #039be5; }
+
+.dropdown-content li > a, .dropdown-content li > span {
+  color: gray; }
+
+.search-box-container {
+  height: 64px;
+  overflow: visible;
+  position: relative;
+  z-index: 999999; }
+
+.collection .collection-item.avatar {
+  line-height: 2.7rem;
+  min-height: 62px; }
+
+.main-user-avatar {
+  width: 150px;
+  height: 150px; }
+  @media only screen and (max-width: 601px) {
+    .main-user-avatar {
+      width: 80px;
+      height: 80px; } }
+
+@media only screen and (max-width: 601px) {
+  .brand-logo {
+    margin-left: 20px; } }
+.invisible-elm {
+  visibility: hidden; }
+
+.error-msg {
+  font-weight: bold;
+  color: red; }
+
+.clear-search-box-btn {
+  cursor: pointer; }
+
 h1 {
   display: inline; }
 
@@ -5,22 +45,14 @@ h2 {
   font-size: 1.5em; }
   user-detail h2 {
     font-size: 2em; }
+    @media only screen and (max-width: 601px) {
+      user-detail h2 {
+        font-size: 1.5em; } }
 
-@media only screen and (max-width: 601px) {
-  .brand-logo {
-    margin-left: 20px; } }
-input.search-boxes[type=text] {
+nav#user-search-nav input.search-boxes[type=text] {
   border-radius: 2px; }
-
-.clear-search-box-btn {
-  cursor: pointer; }
-
-.collection .collection-item.avatar {
-  line-height: 2.5rem;
-  min-height: 62px; }
-  ng-pluralize + user-followers-list .collection .collection-item.avatar {
-    line-height: 1rem; }
-
-.main-user-avatar {
-  width: 150px;
-  height: 150px; }
+nav#user-search-nav .side-nav .clear-search-box-btn {
+  padding-left: 8px; }
+nav#user-search-nav .progress {
+  position: relative;
+  top: -31px; }

@@ -1,20 +1,28 @@
+<p ng-show="$ctrl.UserErrorMessagingService.hasError()" class="error-msg">
+  <strong>ERROR</strong>: {{$ctrl.UserErrorMessagingService.get()}}
+</p>
 <ul class="collection" ng-show="$ctrl.followers && $ctrl.followers.length">
-  <li class="collection-item avatar" ng-repeat="follower in $ctrl.followers">
+  <li class="collection-item avatar valign-wrapper" ng-repeat="follower in $ctrl.followers">
     <a href="#!/user/{{follower.login}}">
       <img ng-src="{{follower.avatar_url}}" alt="Avatar" title="{{follower.login}}'s Avatar" class="circle">
       <span class="title">{{follower.login}}</span>
     </a>
   </li>
 </ul>
-
-<!-- TODO: Not yet completed for previous, etc. -->
-<ul class="pagination" ng-show="$ctrl.lastPageNumURL || $ctrl.prevPageNumURL">
-  <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-  <!--<li class="active"><a href="#!">1</a></li>-->
-  <li class="waves-effect" ng-repeat="curPaginNum in [] | paginationListFilter:$ctrl.lastPageNumURL">
-    <a href="#!/user/{{$ctrl.requestedUser}}/followers/{{curPaginNum}}">
-      {{curPaginNum}}
-    </a>
-  </li>
-  <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
-</ul>
+<div class="row valign-wrapper" ng-show="$ctrl.lastPageNumURL || $ctrl.prevPageNumURL">
+  <p class="col s2 m1"><strong>Pages:</strong></p>
+  <!-- TODO: Not yet completed for next/previous OR the "Load More" version -->
+  <ul class="pagination col s10 m11">
+    <!--<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>-->
+    <!--<li class="active"><a href="#!">1</a></li>-->
+    <li class="waves-effect"
+        ng-class="{active: $ctrl.pageNumIsCurrent(curPaginNum)}"
+        ng-repeat="curPaginNum in [] |
+            paginationListFilter:$ctrl.lastPageNumURL:$ctrl.prevPageNumURL">
+      <a href="#!/user/{{$ctrl.requestedUser}}/followers/{{curPaginNum}}">
+        {{curPaginNum}}
+      </a>
+    </li>
+    <!--<li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>-->
+  </ul>
+</div>

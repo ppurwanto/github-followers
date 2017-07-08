@@ -1,4 +1,12 @@
+<div ng-hide="$ctrl.UserSearchResultsService.searchQuery && $ctrl.UserSearchResultsService.searchQuery !== ''">
+  <h2>Welcome to GitHub Followers App!</h2>
+  <p>You can start by typing a GitHub User's Handle or Username into the User Search box on top-right/in the menu on top-left.</p>
+</div>
+<p ng-show="$ctrl.UserErrorMessagingService.hasError()" class="error-msg">
+  <strong>ERROR</strong>: {{$ctrl.UserErrorMessagingService.get()}}
+</p>
 <div ng-show="$ctrl.UserSearchResultsService.searchQuery && $ctrl.UserSearchResultsService.searchQuery.trim() !== ''">
+  <h2>Select a User Below to View His/Her List of Followers:</h2>
   <ul class="collection" ng-show="$ctrl.UserSearchResultsService.results.items && $ctrl.UserSearchResultsService.results.items.length">
     <li class="collection-item avatar" ng-repeat="user in $ctrl.UserSearchResultsService.results.items">
       <a href="/#!/user/{{user.login}}">
@@ -7,9 +15,7 @@
       </a>
     </li>
   </ul>
-  <p ng-hide="$ctrl.UserSearchResultsService.results.items && $ctrl.UserSearchResultsService.results.items.length">No results.</p>
-</div>
-<div ng-hide="$ctrl.UserSearchResultsService.searchQuery && $ctrl.UserSearchResultsService.searchQuery.trim() !== ''">
-  <h2>Welcome to GitHub Followers App!</h2>
-  <p>You can start by typing into the User Search box above/in the menu.</p>
+  <p ng-hide="$ctrl.UserSearchResultsService.results.items && $ctrl.UserSearchResultsService.results.items.length">
+    No results. Please try another search (or wait for results to arrive).
+  </p>
 </div>

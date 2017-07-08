@@ -1,53 +1,12 @@
-h1 {
-  display: inline;
-}
+@import 'partials/materializecss-mods/_autocomplete.scss';
+@import 'partials/materializecss-mods/_avatar.scss';
+@import 'partials/materializecss-mods/_brand-logo.scss';
 
-h2 {
-  font-size: 1.5em;
-  user-detail & {
-    font-size: 2em;
-  }
-}
+@import '_helpers.scss';
+@import 'partials/_globals.scss';
+@import 'partials/_nav.scss';
 
-@media only screen and (max-width: 601px) { // For small screens (= MCSS .s#)
-  .brand-logo {
-    margin-left: 20px; // Avoid logo overlapping with mobile sidebar menu icon
-  }
-}
-
-input.search-boxes[type=text] {
-  border-radius: 2px;
-}
-
-.clear-search-box-btn {
-  cursor: pointer;
-}
-
-// TODO: Only apply below if don't have next sibling
-//  (description content), like <p>
-// Achieves, relative to avatar, like vertical-align: middle
-.collection .collection-item.avatar { // For direct /followers pages
-  line-height: 2.5rem;
-  
-  // Current Materialize CSS default values for the (Circle) Avatar
-  //  & .collection-item
-  // TODO: Import the values directly from?:
-  //  materialize/sass/components/_global.scss
-  $mcss-avatar-height: 42px;
-  $mcss-collection-item-top-bottom-padding: 10px;
-  
-  // Use those values to calculate more tight-fit value
-  //  (instead of built-in, which is too much)
-  min-height: $mcss-avatar-height +
-      ($mcss-collection-item-top-bottom-padding * 2);
-  
-    // For main user pages with followers listings
-    ng-pluralize + user-followers-list & {
-      line-height: 1rem;
-    }
-}
-
-.main-user-avatar {
-  width: 150px;
-  height: 150px;
-}
+// Navigation
+// NOTE: Can access a root selector from any child, using:
+//someSelectors { $rootSel: &;
+// @at-root #{$rootSel} { /* Style Body */ } }

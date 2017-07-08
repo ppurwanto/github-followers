@@ -2,7 +2,8 @@ logs/*
 !.gitkeep
 node_modules/
 */bower_components/
-/src/assets/css/ # Needed by Heroku when pulling directly from my GitHub 
+# Generated CSS needed by Heroku when pulling directly from my GitHub:
+#/src/assets/css/
 tmp
 .DS_Store
 .idea

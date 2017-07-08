@@ -1,0 +1,5 @@
+@media only screen and (max-width: 601px) { // For small screens (= MCSS .s*)
+  .brand-logo {
+    margin-left: 20px; // Avoid logo overlapping with mobile sidebar menu icon
+  }
+}

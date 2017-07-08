@@ -1,0 +1,19 @@
+.clear-search-box-btn {
+  cursor: pointer;
+}
+
+h1 {
+  display: inline;
+}
+
+h2 {
+  font-size: 1.5em;
+  user-detail & {
+    font-size: 2em;
+    @media only screen and (max-width: 601px) { // For small screens (= MCSS .s*)
+      & {
+        font-size: 1.5em;
+      }
+    }
+  }
+}

@@ -24,11 +24,17 @@
   <script src="assets/libs/bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
 </head>
 <body>
-  <nav ng-controller="NavigationController as navCtrl" class="black">
+  <nav ng-controller="NavigationController as navCtrl" class="black" id="user-search-nav">
     <div class="nav-wrapper container">
       <h1><a href="#!" class="brand-logo white-text">GitHub Followers</a></h1>
       <a href="#!" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
-      <!-- Build for both mobile and normal versions -->
+      <!-- Build for both mobile and normal versions
+        NOTE: Alternatively, can use Gulp file include libraries
+      -->
+      <!-- TODO: Fix bug where first auto result while user still typing closes
+          the sidebar
+      -->
+      <!-- TODO: Move complex ng-class logic into controller & call the getters -->
       <ul ng-repeat="curNavClasses in ['right hide-on-med-and-down', 'side-nav']"
           ng-attr-id="{{curNavClasses === 'side-nav' ? 'nav-mobile' : 'nav-main'}}"
           ng-class="curNavClasses">
@@ -51,19 +57,25 @@
                     <div class="col s8">
                       <input ng-attr-id="search-box-{{::$id}}" class="search-boxes"
                           ng-class="{'white-text': curNavClasses !== 'side-nav',
-                              'black-text': curNavClasses === 'side-nav',
                               'grey darken-3': curNavClasses !== 'side-nav',
+                              'black-text': curNavClasses === 'side-nav',
                               'grey lighten-4': curNavClasses === 'side-nav'}"
                           type="text"
                           ng-model="navCtrl.UserSearchResultsService.searchQuery"
-                          ng-keyup="navCtrl.UserSearchResultsService.fetchResultsDelayed()"
+                          ng-change="navCtrl.UserSearchResultsService.fetchResultsDelayed()"
+                          ng-keyup="navCtrl.processShortcutKey($event.keyCode, curNavClasses === 'side-nav')"
                           placeholder=" Search User">
                       <label for="search-box-{{::$id}}">Search</label>
+                      
+                      <div class="progress hide">
+                        <div class="indeterminate"></div>
+                      </div>
                     </div>
                     <div class="col s1 pull-s1">
-                      <i class="material-icons clear-search-box-btn"
+                      <i class="material-icons clear-search-box-btn scale-transition scale-out"
                           ng-class="{'white-text': curNavClasses !== 'side-nav',
-                              'black-text': curNavClasses === 'side-nav'}"
+                              'black-text': curNavClasses === 'side-nav',
+                              'scale-in': navCtrl.UserSearchResultsService.searchQuery !== ''}"
                           ng-click="navCtrl.UserSearchResultsService.clearSearchQuery()">
                         close
                       </i>
@@ -100,6 +112,8 @@
   <script src="app/components/user/user.js"></script>
   <script src="app/components/user/user-search/user-search.js"></script>
   <script src="app/components/user/user-followers/user-followers.js"></script>
+  <script src="app/common/common.module.js"></script>
+  <script src="app/common/utils.js"></script>
   <script src="app/common/nav/nav.js"></script>
   <script src="app/app.module.js"></script>
   <script src="app/app.routes.js"></script>

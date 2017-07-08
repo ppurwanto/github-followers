@@ -1,0 +1,16 @@
+nav#user-search-nav {
+  input.search-boxes[type=text] {
+    border-radius: 2px;
+  }
+  
+  & .side-nav { // Mobile Sidebar
+    .clear-search-box-btn {
+      padding-left: 8px;
+    }
+  }
+  
+  .progress {
+    position: relative;
+    top: -31px;
+  }
+}
