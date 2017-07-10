@@ -10,3 +10,7 @@
 // NOTE: Can access a root selector from any child, using:
 //someSelectors { $rootSel: &;
 // @at-root #{$rootSel} { /* Style Body */ } }
+
+user-detail > .row:first-child {
+  margin-top: 20px;
+}

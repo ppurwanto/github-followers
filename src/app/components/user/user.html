@@ -1,21 +1,29 @@
-<h2 ng-hide="$ctrl.UserErrorMessagingService.hasError()">
-  <img ng-src="{{$ctrl.user.avatar_url}}" alt="Avatar"
-    title="{{$ctrl.user.login ? ($ctrl.requestedUser = $ctrl.user.login) :
-        $ctrl.requestedUser}}'s Avatar"
-    class="circle main-user-avatar">
-  User <strong>{{$ctrl.requestedUser}}</strong>
-  
-  <span ng-show="$ctrl.user.login">has
-    <strong>
-      <ng-pluralize count="$ctrl.user.followers"
-          when="{'0': 'no follower',
-                 'one': '1 follower:',
-                 'other': '{{$ctrl.user.followers | number}} followers:'}">
-      </ng-pluralize>
-    </strong>
-  </span>
-  <span ng-hide="$ctrl.user.login">does <strong>NOT exist</strong>!</span>
-</h2>
+<div class="row valign-wrapper">
+  <!-- s3 m3 l3 xl2 = Tight fit combo for col1 & overlaps on smallest edge cases -->
+  <div class="col s4 m4 l4 xl3 center-align">
+    <img ng-src="{{$ctrl.user.avatar_url}}" alt="Avatar"
+      title="{{$ctrl.user.login ? ($ctrl.requestedUser = $ctrl.user.login) :
+          $ctrl.requestedUser}}'s Avatar"
+      class="circle main-user-avatar">
+  </div>
+  <!-- s9 m9 l9 xl10 = Tight fit combo for col1 & overlaps on smallest edge cases -->
+  <div class="col s8 m8 l8 xl9">
+    <h2 ng-hide="$ctrl.UserErrorMessagingService.hasError()">
+      User <strong>{{$ctrl.requestedUser}}</strong>
+
+      <span ng-show="$ctrl.user.login">has
+        <strong>
+          <ng-pluralize count="$ctrl.user.followers"
+              when="{'0': 'no follower.',
+                     'one': '1 follower:',
+                     'other': '{{$ctrl.user.followers | number}} followers:'}">
+          </ng-pluralize>
+        </strong>
+      </span>
+      <span ng-hide="$ctrl.user.login">does <strong>NOT exist</strong>!</span>
+    </h2>
+  </div>
+</div>
 <p ng-show="$ctrl.UserErrorMessagingService.hasError()" class="error-msg">
   <strong>ERROR</strong>: {{$ctrl.UserErrorMessagingService.get()}}
 </p>

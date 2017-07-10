@@ -4,6 +4,8 @@ This project is an AngularJS web app client for consuming GitHub's
 API and providing a service to search a GitHub user and see a list of his/her
 followers.
 
+:new: Below extra updates made after the final (2nd) submission are prefixed with this "NEW" icon.
+
 ## The Problem
 Although it's much simpler to use REST APIs like GitHub's instead of by Web Scraping
 like I need to do for many other sites that don't have an API, it comes with its
@@ -36,13 +38,25 @@ the Link headers for pagination.
 
 ## If Only I had More Time . . .
 * Fine tune more details/styling and straighten out blemishes.
+    - :new: Responsively switch to a more intuitive search box User Interface for
+mobile/small screens instead of placing it in the menu sidebar. For example,
+model it after Google Chrome Mobile App's Omnibox:
+        1. Takes up the full length of the screen (or shares the same line
+with the logo; in that case, the logo should be shrinked on step 3 & returned
+to normal on step 4).
+        2. Fixed on top of the screen while scrolling.
+        3. When scrolling down and omnibox's original location is out of view,
+automatically hide the omnibox.
+        4. As soon as the user scrolled up even just a bit, automatically
+show the omnibox again. Repeat step 3 when the user scrolled down again.
 * Add more CSS/Materialize/ng animations, transitions, optimizations, etc.
 * Try Travis Continuous Integration (CI) for continual, automated testing.
+(:new: I see Heroku also provides its Pipeline system with Heroku CI.)
 * Try Angular (Platform) v4 with TypeScript, and also deeper ES6+ usage.
 * Be even more consistent in the language style guide that I follow
 (mainly Google's JavaScript [style](https://google.github.io/styleguide/jsguide.html) [guides](https://google.github.io/styleguide/javascriptguide.xml))
 and Todd Motto's [AngularJS style guide](https://github.com/toddmotto/angularjs-styleguide).
-* More (practical ones) are in the form of TODO comments in my code.
+* More (practical ones) are in the form of `TODO` comments in my code.
 * As reference, I have only few months to less than a year of experience with
 Angular.js, jQuery, ES6+, Materialize CSS, SASS, etc. I do have over 8 years
 experience with core JavaScript since & mostly from ES3. Also, since quality is
@@ -66,6 +80,7 @@ However, I did do extensive manual tests and have very little automated test
 experience to begin with, and, at most, I usually just do simple
 console.assert() statements (later stripped by Gulp uglify plugin)
 in my personal projects--of which I didn't use here either.
+:new: I started creating more simple integration (protractor) tests.
 * Adhere closely to OOP single responsibility principle & further separation/modularization of code.
 * Minify files and convert ES6+ JS to ES5 with Gulp+Babel, etc. and modularize Angular & SCSS more.
 * Optimize for slow Internet speeds and add more progress bars/spinners while
@@ -95,4 +110,6 @@ and innovative, just like this very challenge!
 * [My LinkedIn](https://www.linkedin.com/in/peter-purwanto/)
 
 ## Link to the Hosted Application
-[github--followers.herokuapp.com](https://github--followers.herokuapp.com/)
+- [github--followers.herokuapp.com](https://github--followers.herokuapp.com/)
+- :new: The latest version under the `hotfix/post-submission-tentative-auto-testing-etc` branch is hosted:
+[github-followers-staging.herokuapp.com](https://github-followers-staging.herokuapp.com/)

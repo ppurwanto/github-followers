@@ -120,6 +120,9 @@ angular
                   data: svc.resultsInMCSSAutoCompleteFormat,
                   limit: autoCompleteNewResultsLimit,
                   onAutocomplete: (value) => {
+                    //* An autocomplete suggestion has been clicked
+                    $('.button-collapse').sideNav('hide');
+                    
                     // To prevent causing conflicts with redirects thinking
                     //    we need to go back to search results view
                     svc.clearSearchQuery();
@@ -127,6 +130,8 @@ angular
                     $location.path('/user/' + value);
                   }
                 });
+                
+                $('.search-boxes').keyup();
               }
             svc.toggleLoadingBar(false);
 //            console.log('User Search Results completed.');

@@ -26,6 +26,9 @@ angular
               }
             });
             
+            $('.close-sidebar-btn').click(() => {
+                $('.button-collapse').sideNav('hide')});
+            
             /* Search Boxes */
             $mainSearchBoxes = $('.search-boxes');
             
@@ -51,8 +54,8 @@ angular
       }
     };
     
-    $rootScope.$on('$viewContentLoaded', () => {
-      console.log('View Loaded @', Date.now);
-    //Here your view content is fully loaded !!
-    });
+    // TODO: Do animations once view content is loaded using handler like this:
+//    $scope.$on('$viewContentLoaded', () => {
+//    //Here your view content is fully loaded !!
+//    });
   });

@@ -35,7 +35,7 @@
   font-weight: bold;
   color: red; }
 
-.clear-search-box-btn {
+.pointer-cursor {
   cursor: pointer; }
 
 h1 {
@@ -56,3 +56,6 @@ nav#user-search-nav .side-nav .clear-search-box-btn {
 nav#user-search-nav .progress {
   position: relative;
   top: -31px; }
+
+user-detail > .row:first-child {
+  margin-top: 20px; }
